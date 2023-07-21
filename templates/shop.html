@@ -1,0 +1,91 @@
+{% extends 'flatpages/default.html' %}
+{% load static %}
+{% block title %}
+Магазин
+{% endblock title %}
+
+{% block content %}
+<div class="popup">
+  <div class="popup-content">
+    <h1 class="popup-title">Магазин</h1>
+
+    {% for item in items %}
+    <div class="item">
+      <h2>{{ item.name }}</h2>
+      <p>{{ item.description }}</p>
+      <p>Цена: {{ item.price }}</p>
+      <button class="buy-btn">Купить</button>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.popup {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.popup-title {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.item {
+  margin-bottom: 20px;
+}
+
+.buy-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+</style>
+
+{% block scripts %}
+<script>
+  // Добавить скрипты для открытия/закрытия окна
+  document.addEventListener('click', function(event) {
+    const popup = document.querySelector('.popup');
+    const popupContent = document.querySelector('.popup-content');
+
+    // Если клик произошел вне всплывающего окна, закрыть окно
+    if (!popupContent.contains(event.target)) {
+      // Перейти на страницу main
+      window.location.href = '/main/';
+    }
+  });
+
+  // Добавить скрипты для покупки товара
+  const buyButtons = document.querySelectorAll('.buy-btn');
+
+  buyButtons.forEach(button => {
+    button.addEventListener('click', e => {
+      // Отправить запрос на сервер для покупки товара
+      const itemId = e.target.dataset.itemId;
+      // Реализация запроса на сервер
+
+      // Если покупка прошла успешно, добавить товар в инвентарь
+      alert('Товар успешно куплен и добавлен в инвентарь');
+    });
+  });
+</script>
+{% endblock scripts %}
+
+{% endblock content %}

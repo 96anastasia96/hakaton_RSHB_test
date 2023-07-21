@@ -1,0 +1,32 @@
+{% extends 'flatpages/default.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    #start_btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    #start_btn a {
+        display: block;
+        width: 200px;
+        height: 50px;
+        background-image: url('{% static 'images/start_button.png' %}');
+        background-size: cover;
+        background-position: center;
+        text-indent: -9999px;
+        border: none;
+    }
+</style>
+
+
+<div id="start_btn">
+    <a href="#">PRESS START</a>
+</div>
+
+
+{% endblock content %}

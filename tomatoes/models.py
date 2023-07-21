@@ -117,9 +117,14 @@ def start_the_game():
 pygame.init()
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 description = 'В этой мини-игре вам нужно управлять роботом и собрать 20 падающих овощей.'
-rules = 'За каждый собранный овощ вы получаете очки: зелёный - 2, переспелый - 1, спелый - 4. В конце раунда ваши очки умножаются на 100'
+rules = 'За каждый собранный овощ вы получаете очки: чёрный - 2, зеленый - 1, красный - 4. В конце раунда ваши очки умножаются на 100'
 menu = pygame_menu.Menu('Мини-Игра 1', WINDOW_WIDTH, WINDOW_HEIGHT, theme=pygame_menu.themes.THEME_BLUE)
+
+
+# Добавление описания и правил игры
 menu.add.label(description, max_char=-1, font_size=18)
 menu.add.label(rules, max_char=-1, font_size=18)
+
+
 menu.add.button('Играть', start_the_game)
 menu.mainloop(pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)))

@@ -1,0 +1,73 @@
+{% extends "flatpages/default.html" %}
+
+{% block content %}
+    {% csrf_token %}
+<div class="popup">
+  <div class="popup-content" style="text-align: center;">
+    <h1 class="popup-title" style="font-family: 'Ubuntu', sans-serif;">Регистрация</h1>
+
+    <form method="POST" action="">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_username" style="font-family: 'Ubuntu', sans-serif;">Логин</label><br/>
+        {{ form.username }}
+      </div><br/>
+      <div class="form-group">
+        <label for="id_email" style="font-family: 'Ubuntu', sans-serif;">Email</label><br/>
+        {{ form.email }}
+      </div><br/>
+      <div class="form-group">
+        <label for="id_password1" style="font-family: 'Ubuntu', sans-serif;">Пароль</label> <br/>
+        {{ form.password1 }}
+      </div><br/>
+      <div class="form-group">
+        <label for="id_password2" style="font-family: 'Ubuntu', sans-serif;">Подтвердите пароль</label><br/>
+        {{ form.password2 }}
+      </div><br/>
+      <button type="submit" class="btn btn-primary" style="font-family: 'Ubuntu', sans-serif;">Register</button>
+    </form>
+  </div>
+</div>
+
+<style>
+.popup {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.popup-title {
+  margin-bottom: 10px;
+}
+</style>
+
+
+{% block scripts %}
+<script>
+  // Добавить скрипты для открытия/закрытия окна
+  document.addEventListener('click', function(event) {
+    const popup = document.querySelector('.popup');
+    const popupContent = document.querySelector('.popup-content');
+
+    // Если клик произошел вне всплывающего окна, закрыть окно
+    if (!popupContent.contains(event.target)) {
+      // Перейти на страницу main
+      window.location.href = '/main/';
+    }
+  });
+</script>
+{% endblock scripts %}
+
+{% endblock %}

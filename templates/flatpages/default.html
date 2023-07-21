@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RSHB Game</title>
+    <style>
+        body {
+            background-color: #d18e11;
+        }
+
+            #profile_btn, #shop_btn, #inventory_btn, #rules_btn, #settings_btn, #sign_up_btn {
+            color: white;
+            background-color: #279500;
+            border: 1px solid white;
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #wallet {
+            color: white;
+            background-color: #279500;
+            border: 1px solid white;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body id="background" style="background-image: url('{% static 'images/farm.jpg' %}'); background-size: cover; background-repeat: no-repeat; background-position: center;">
+    <button id="profile_btn" onclick="openProfile()">Профиль</button>
+    <button id="shop_btn" onclick="openShop()">Магазин</button>
+    <button id="inventory_btn" onclick="openInventory()">Инвентарь</button>
+    <button id="rules_btn">Правила</button>
+    <button id="settings_btn">Настройки</button>
+    <button id="sign_up_btn" onclick="Register()">Регистрация</button>
+
+    <div id="wallet">Кошелек: ₽<span id="money"> {{ bank_balance }} </span></div>
+
+
+    <script>
+        function openShop() {
+            window.location.href = "/shop/";
+            console.log("Магазин открыт");
+        }
+
+        function openInventory() {
+            window.location.href = "/inventory/";
+            console.log("Инвентарь открыт");
+        }
+        function openProfile() {
+            window.location.href = "/profile/";
+            console.log("Профиль открыт");
+        }
+        function Register() {
+            window.location.href = "/signup/";
+            console.log("Регистрация");
+        }
+    </script>
+
+<div class="row">
+               <div class="col-lg-12 text-center">
+                   {% block content %}
+                   {{ flatpage.content }}
+                   {% endblock content %}
+               </div>
+           </div>
+
+</body>
+</html>

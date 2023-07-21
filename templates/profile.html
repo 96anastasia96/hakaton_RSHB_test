@@ -1,0 +1,63 @@
+{% extends 'flatpages/default.html' %}
+{% load static %}
+{% block title %}
+Профиль
+{% endblock title %}
+
+{% block content %}
+<div class="popup">
+  <div class="popup-content">
+    <h1 class="popup-title">Профиль игрока {{ player.username }}</h1>
+
+    {% for achievement in achievements %}
+    <p>{{ achievement.name }}</p>
+    {% endfor %}
+
+    <p><strong>Уровень:</strong> {{ player_profile.level }}</p>
+    <p><strong>Опыт:</strong> {{ player_profile.experience }}</p>
+    <p><strong>Рейтинг:</strong> {{ player_profile.rating }}</p>
+  </div>
+</div>
+
+<style>
+.popup {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.popup-title {
+  text-align: center;
+  margin-bottom: 10px;
+}
+</style>
+
+{% block scripts %}
+<script>
+  // Добавить скрипты для открытия/закрытия окна
+  document.addEventListener('click', function(event) {
+    const popup = document.querySelector('.popup');
+    const popupContent = document.querySelector('.popup-content');
+
+    // Если клик произошел вне всплывающего окна, закрыть окно
+    if (!popupContent.contains(event.target)) {
+      // Перейти на страницу main
+      window.location.href = '/main/';
+    }
+  });
+</script>
+{% endblock scripts %}
+
+{% endblock content %}
