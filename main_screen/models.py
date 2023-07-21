@@ -8,7 +8,6 @@ class Player(models.Model):
         ('F', 'Female'),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    username = models.CharField(max_length=100)
     wallet = models.IntegerField(default=0)
     bank_balance = models.IntegerField(default=0)
     credit_limit = models.IntegerField(default=0)
@@ -29,7 +28,7 @@ class PlayerProfile(models.Model):
     achievements = models.ManyToManyField('Achievement')
 
     def __str__(self):
-        return f"{self.player.username}'s Profile"
+        return f"{self.player.user.username}'s Profile"
 
 
 class Achievement(models.Model):
