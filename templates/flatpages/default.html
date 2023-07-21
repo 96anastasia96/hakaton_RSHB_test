@@ -8,7 +8,7 @@
             background-color: #d18e11;
         }
 
-            #profile_btn, #shop_btn, #inventory_btn, #rules_btn, #settings_btn, #sign_up_btn {
+        #profile_btn, #shop_btn, #inventory_btn, #rules_btn, #settings_btn, #sign_up_btn {
             color: white;
             background-color: #279500;
             border: 1px solid white;
@@ -34,7 +34,9 @@
     <button id="settings_btn">Настройки</button>
     <button id="sign_up_btn" onclick="Register()">Регистрация</button>
 
-    <div id="wallet">Кошелек: ₽<span id="money"> {{ bank_balance }} </span></div>
+    {% block wallet %}
+    <div id="wallet">Кошелек: {{ player.wallet }} ₽<span id="money">  </span></div>
+    {% endblock %}
 
 
     <script>
@@ -57,13 +59,13 @@
         }
     </script>
 
-<div class="row">
-               <div class="col-lg-12 text-center">
-                   {% block content %}
-                   {{ flatpage.content }}
-                   {% endblock content %}
-               </div>
-           </div>
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            {% block content %}
+            {{ flatpage.content }}
+            {% endblock content %}
+        </div>
+    </div>
 
 </body>
 </html>

@@ -1,5 +1,7 @@
 {% extends 'flatpages/default.html' %}
 {% load static %}
+
+
 {% block title %}
 Магазин
 {% endblock title %}
@@ -11,12 +13,18 @@
 
     {% for item in items %}
     <div class="item">
-      <h2>{{ item.name }}</h2>
-      <p>{{ item.description }}</p>
-      <p>Цена: {{ item.price }}</p>
-      <button class="buy-btn">Купить</button>
+        <h2>{{ item.name }}</h2>
+        <p>{{ item.price }}</p>
+        {% if item.price <= player.wallet %}
+            <form action="{% url 'purchase_item' item.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Купить</button>
+            </form>
+        {% else %}
+            <button disabled><p>Не хватает средств</p></button>
+        {% endif %}
     </div>
-    {% endfor %}
+{% endfor %}
   </div>
 </div>
 

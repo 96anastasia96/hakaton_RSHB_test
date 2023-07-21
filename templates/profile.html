@@ -1,5 +1,10 @@
 {% extends 'flatpages/default.html' %}
 {% load static %}
+
+{% block wallet %}
+    {{ block.super }}
+{% endblock %}
+
 {% block title %}
 Профиль
 {% endblock title %}
@@ -7,7 +12,7 @@
 {% block content %}
 <div class="popup">
   <div class="popup-content">
-    <h1 class="popup-title">Профиль игрока {{ player.username }}</h1>
+    <h1 class="popup-title">Профиль игрока {{ player.user.username }}</h1>
 
     {% for achievement in achievements %}
     <p>{{ achievement.name }}</p>

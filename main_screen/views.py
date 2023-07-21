@@ -1,7 +1,7 @@
-from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from .models import Player, PlayerProfile, Achievement, Item, Shop, Inventory, InventoryItem, Settings
+from django.contrib.auth.models import User
 
 
 def start_screen(request):
@@ -23,8 +23,13 @@ def profile(request):
 
 
 def shop(request):
-    shop = Shop.objects.get(id=1)
-    items = shop.items.all()
+    try:
+        player = Player.objects.get(user=request.user)
+        shop = Shop.objects.get(player=player)
+        items = shop.items.all()
+    except Shop.DoesNotExist:
+        shop = None
+        items = None
 
     context = {
         'shop': shop,
@@ -36,13 +41,18 @@ def shop(request):
 
 def purchase_item(request, item_id):
     item = Item.objects.get(id=item_id)
-    player = Player.objects.get(id=1)  # Replace with the appropriate way to get the current player
-    inventory = Inventory.objects.get(player__player=player)
-    inventory_item, _ = InventoryItem.objects.get_or_create(inventory=inventory, item=item)
-    inventory_item.quantity += 1  # Increment the quantity of the purchased item
-    inventory_item.save()
+    inventory = Inventory.objects.get(player=request.user)
+    if inventory.player.wallet >= item.price:
+        inventory_item = InventoryItem.objects.create(inventory=inventory, item=item)
+        inventory_item.save()
+        # Deduct the item price from the user's wallet
+        inventory.player.wallet -= item.price
+        inventory.player.save()
+        return redirect('inventory')
+    else:
+        # Handle insufficient funds error
+        return redirect('shop')
 
-    return redirect('inventory')  # Redirect to the inventory page
 
 
 def inventory(request):

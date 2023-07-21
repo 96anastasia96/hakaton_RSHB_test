@@ -7,17 +7,16 @@ class Player(models.Model):
         ('M', 'Male'),
         ('F', 'Female'),
     )
-
-    name = models.CharField(max_length=100)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    username = models.CharField(max_length=100)
     wallet = models.IntegerField(default=0)
     bank_balance = models.IntegerField(default=0)
     credit_limit = models.IntegerField(default=0)
     credit_balance = models.IntegerField(default=0)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
 
-
     def __str__(self):
-        return self.name
+        return self.user.username
 
     def can_afford_item(self, item):
         return self.wallet + self.bank_balance + self.credit_balance >= item.price
@@ -30,7 +29,7 @@ class PlayerProfile(models.Model):
     achievements = models.ManyToManyField('Achievement')
 
     def __str__(self):
-        return self.player.name + "'s Profile"
+        return f"{self.player.username}'s Profile"
 
 
 class Achievement(models.Model):
@@ -50,19 +49,17 @@ class Item(models.Model):
 
 
 class Shop(models.Model):
-    name = models.CharField(max_length=100)
     items = models.ManyToManyField(Item)
+    player = models.OneToOneField(Player, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.name
 
 
 class Inventory(models.Model):
-    player = models.OneToOneField(User, on_delete=models.CASCADE)
+    player = models.OneToOneField(Player, on_delete=models.CASCADE)
     items = models.ManyToManyField(Item, through='InventoryItem')
 
     def __str__(self):
-        return self.player.name + "'s Inventory"
+        return f"{self.player.username}'s Inventory"
 
 
 class InventoryItem(models.Model):
@@ -80,4 +77,6 @@ class Settings(models.Model):
     language = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.player.name + "'s Settings"
+        return f"{self.player.username}'s Settings"
+
+
