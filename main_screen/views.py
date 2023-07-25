@@ -1,4 +1,7 @@
+import subprocess
+
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Player, PlayerProfile, Item, Shop, Inventory, InventoryItem, Settings
 from django.contrib.auth.decorators import login_required
@@ -10,9 +13,17 @@ def start_screen(request):
 
 @login_required
 def profile(request):
-    player = Player.objects.get(user=request.user)
-    player_profile = PlayerProfile.objects.get(player=player)
-    achievements = player_profile.achievements.all()
+    try:
+        player = Player.objects.get(user=request.user)
+    except Player.DoesNotExist:
+        player = None
+
+    try:
+        player_profile = PlayerProfile.objects.get(player=player)
+        achievements = player_profile.achievements.all()
+    except PlayerProfile.DoesNotExist:
+        player_profile = None
+        achievements = None
 
     context = {
         'player': player,
@@ -34,6 +45,7 @@ def shop(request):
         items = None
 
     context = {
+        'player': player,
         'shop': shop,
         'items': items
     }
@@ -60,11 +72,17 @@ def purchase_item(request, item_id):
 def inventory(request):
     try:
         inventory = Inventory.objects.get(player__user=request.user)
+        items = inventory.items.all()
     except ObjectDoesNotExist:
-        # Create a new inventory record for the user if it doesn't exist
-        inventory = Inventory.objects.create(player=Player.objects.get(user=request.user))
-
-    items = inventory.items.all()
+        # Check if Player exists before creating new Inventory
+        try:
+            player = Player.objects.get(user=request.user)
+            inventory = Inventory.objects.create(player=player)
+            items = inventory.items.all()
+        except Player.DoesNotExist:
+            player = None
+            inventory = None
+            items = None
 
     context = {
         'inventory': inventory,
@@ -85,3 +103,13 @@ def settings(request):
     }
 
     return render(request, 'settings.html', context)
+
+
+def start_game(request):
+    # Путь до файла игры
+    start_the_game = 'tomatoes/models.py'
+
+    # Запуск скрипта игры
+    subprocess.run(f"python3 {start_the_game}", shell=True)
+
+    return HttpResponse("Game started")

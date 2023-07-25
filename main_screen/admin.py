@@ -21,7 +21,8 @@ class PlayerAdmin(admin.ModelAdmin):
 
 admin.site.register(PlayerProfile)
 admin.site.register(Inventory)
-admin.site.register(InventoryItem)
 admin.site.register(Item)
 admin.site.register(Achievement)
+admin.site.register(Shop)
+
 

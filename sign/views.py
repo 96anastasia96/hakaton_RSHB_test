@@ -39,3 +39,4 @@ def LogoutViewCustom(request):
     logout(request)
     messages.success(request, ("You Have Been Logged Out."))
     return redirect('/main')
+
